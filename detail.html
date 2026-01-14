@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายละเอียดสถานที่</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="css/detail.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary:#00A7A7;
+  --gold:#D4A857;
+  --dark:#0a2f2f;
+  --soft:#f3fbfa;
+  --black:#089999;
+}
+
+/* iframe responsive */
+.embed-card iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border:0;
+  border-radius:12px;
+}
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lightboxClose">&times;</span>
+  <img id="lightboxImg">
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top fade-in">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center place-title" href="index.html">
+      <img src="assets/img/logo-t.png" class="me-2">
+      <span class="fw-bold">Nakhonsi Travel</span>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-box fade-in" style="background:var(--primary);">
+  <h1 id="place-name" class="hero-title"></h1>
+</div>
+
+<!-- CONTENT -->
+<div class="container py-5 fade-in">
+
+  <a href="index.html" class="btn btn-back mb-3">
+    <i class="bi bi-arrow-left"></i> กลับ
+  </a>
+
+  <!-- IMAGES -->
+  <div id="carouselContainer" class="mb-4 fade-in"></div>
+
+  <!-- DETAIL -->
+  <h4 class="mb-2">รายละเอียด</h4>
+  <p id="place-detail" class="detail-text fade-in"></p>
+
+  <!-- YOUTUBE -->
+  <h4 class="mt-4">วิดีโอแนะนำ</h4>
+  <div id="youtube" class="embed-card fade-in"></div>
+
+  <!-- MAP -->
+  <h4 class="mt-4">แผนที่</h4>
+  <div id="map" class="embed-card fade-in"></div>
+
+</div>
+<!-- FOOTER -->
+<footer class="text-white pt-5 fade-in">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 mb-4">
+        <h5>เกี่ยวกับเรา</h5>
+        <p>เว็บไซต์............</p>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5>เมนู</h5>
+        <ul class="list-unstyled">
+          <li><a href="#top">หน้าแรก</a></li>
+          <li><a href="#section1">สถานที่ท่องเที่ยว</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5>ช่องทางติดต่อ</h5>
+        <a href="#" class="me-3 fs-4"><i class="bi bi-facebook"></i></a>
+      </div>
+
+    </div>
+    <hr class="bg-white">
+    <div class="text-center pb-3">©2025</div>
+  </div>
+</footer>
+<script>
+const id = new URLSearchParams(location.search).get("id");
+
+// ---------- NAME ----------
+async function loadName(){
+  try{
+    const t = await fetch(`assets/id/${id}/name.txt`).then(r=>r.text());
+    document.getElementById("place-name").innerText = t.trim();
+  }catch(e){}
+}
+
+// ---------- DETAIL ----------
+async function loadDetail(){
+  try{
+    const t = await fetch(`assets/id/${id}/detail.txt`).then(r=>r.text());
+    document.getElementById("place-detail").innerText = t.trim();
+  }catch(e){}
+}
+
+// ---------- YOUTUBE (FIXED) ----------
+async function loadYoutube(){
+  try{
+    const raw = await fetch(`assets/id/${id}/youtube.txt`);
+    if(!raw.ok) throw "";
+
+    const content = (await raw.text()).trim();
+    if(!content) throw "";
+
+    // ถ้าเป็น iframe อยู่แล้ว
+    if(content.includes("<iframe")){
+      document.getElementById("youtube").innerHTML = content;
+      return;
+    }
+
+    // ถ้าเป็น URL
+    let videoId = "";
+    if(content.includes("youtube.com/watch?v=")){
+      videoId = content.split("v=")[1].split("&")[0];
+    }else if(content.includes("youtu.be/")){
+      videoId = content.split("youtu.be/")[1];
+    }
+
+    if(videoId){
+      document.getElementById("youtube").innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/${videoId}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>`;
+    }else{
+      throw "";
+    }
+
+  }catch(e){
+    document.getElementById("youtube").innerHTML =
+      `<p class="text-muted">ไม่มีวิดีโอ</p>`;
+  }
+}
+
+// ---------- MAP ----------
+async function loadMap(){
+  try{
+    const link = await fetch(`assets/id/${id}/location.txt`).then(r=>r.text());
+    document.getElementById("map").innerHTML =
+      `<iframe src="${link.trim()}" allowfullscreen></iframe>`;
+  }catch(e){
+    document.getElementById("map").innerHTML =
+
+      `<p class="text-muted">ไม่มีแผนที่</p>`;
+  }
+}
+
+// ---------- LIGHTBOX ----------
+function enableLightbox(){
+  const imgs = document.querySelectorAll(".carousel-item img");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const closeBtn = document.getElementById("lightboxClose");
+
+  imgs.forEach(img=>{
+    img.onclick = ()=>{
+      lightboxImg.src = img.src;
+      lightbox.style.display = "flex";
+    };
+  });
+
+  closeBtn.onclick = ()=> lightbox.style.display = "none";
+  lightbox.onclick = e => { if(e.target === lightbox) lightbox.style.display = "none"; };
+}
+
+// ---------- IMAGES ----------
+async function loadImages(){
+  const base = `assets/id/${id}/img/`;
+  const exts = ["jpg","png","webp"];
+  const imgs = [];
+
+  for(let i=1;i<=30;i++){
+    for(let ext of exts){
+      const path = `${base}${i}.${ext}`;
+      try{
+        const r = await fetch(path);
+        if(r.status === 200) imgs.push(path);
+      }catch(e){}
+    }
+  }
+
+  if(imgs.length === 0){
+    document.getElementById("carouselContainer").innerHTML =
+      `<p class="text-muted">ไม่มีรูปภาพ</p>`;
+    return;
+  }
+
+  let slides="";
+  imgs.forEach((src,i)=>{
+    slides += `
+      <div class="carousel-item ${i===0?'active':''}">
+        <img src="${src}" class="d-block w-100">
+      </div>`;
+  });
+
+  document.getElementById("carouselContainer").innerHTML = `
+    <div id="slider" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">${slides}</div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#slider" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>`;
+
+  enableLightbox();
+}
+
+// ---------- INIT ----------
+loadName();
+loadDetail();
+loadImages();
+loadYoutube();
+loadMap();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
