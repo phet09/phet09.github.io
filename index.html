@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เว็บไซต์ท่องเที่ยว</title>
+    
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="css/index.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary:#00A7A7;
+  --gold:#D4A857;
+  --dark:#0a2f2f;
+  --soft:#f3fbfa;
+  --black:#089999;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top fade-in">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#top">
+      <img src="assets/img/logo-t.png" class="me-2">
+      <span class="fw-bold">Nakhonsi Travel</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#top">หน้าแรก</a></li>
+        <li class="nav-item"><a class="nav-link" href="#location">ค้นหา</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="position-relative fade-in">
+  <video autoplay muted loop playsinline class="position-absolute w-100 h-100 object-fit-cover">
+    <source src="assets/video/header.mp4" type="video/mp4">
+  </video>
+
+  <div class="header-overlay"></div>
+
+  <div class="container position-relative text-white text-center">
+    <img src="assets/img/logo-t.png" class="me-2" style="width: 50%; height: 50%">
+<p>เที่ยวนครศรีฯ – รวมสถานที่ท่องเที่ยวครบในเว็บเดียว</p>
+	  <br>
+  </div>
+
+  <div class="scroll-down">
+    <a href="#location" class="text-white"><i class="bi bi-arrow-down-circle-fill"></i></a>
+  </div>
+</header>
+
+<!-- SECTION CONTENT -->
+<section id="location" class="container py-5 fade-in">
+	<br>
+	<br>
+  <!-- SEARCH BOX -->
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1" style="border-radius: 1px;">
+        <i class="bi bi-search-heart-fill"></i>
+      </span>
+    </div>
+    <input id="filter" type="text" class="form-control mb-4" placeholder=" ค้นหาสถานที่">
+  </div>
+
+  <!-- FILTER TAG BUTTONS -->
+  <div class="mb-4 text-center">
+    <button class="btn btn-outline-primary m-1 tag-btn" data-tag="น้ำตก">น้ำตก</button>
+	<button class="btn btn-outline-primary m-1 tag-btn" data-tag="ถ้ำ">ถ้ำ</button>
+    <button class="btn btn-outline-primary m-1 tag-btn" data-tag="ร้านค้า">ร้านค้า</button>
+    <button class="btn btn-outline-primary m-1 tag-btn" data-tag="ร้านอาหาร">ร้านอาหาร</button>
+    <button class="btn btn-outline-primary m-1 tag-btn" data-tag="ประเพณีท้องถิ่น">ประเพณีท้องถิ่น</button>
+    <button class="btn btn-outline-primary m-1 tag-btn" style="background: #FF6EB8; color: #FFFFFF" data-tag="สถานที่ฉุกเฉิน"> <i class="bi bi-hospital"></i>  สถานที่ฉุกเฉิน</button>
+  </div>
+
+  <div id="list" class="row g-4"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox">
+  <img id="lightbox-img">
+</div>
+
+<!-- FOOTER -->
+<footer class="text-white pt-5 fade-in">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 mb-4">
+        <h5>เกี่ยวกับเรา</h5>
+        <p>เว็บไซต์............</p>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5>เมนู</h5>
+        <ul class="list-unstyled">
+          <li><a href="#top">หน้าแรก</a></li>
+          <li><a href="#section1">สถานที่ท่องเที่ยว</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5>ช่องทางติดต่อ</h5>
+        <a href="#" class="me-3 fs-4"><i class="bi bi-facebook"></i></a>
+      </div>
+
+    </div>
+    <hr class="bg-white">
+    <div class="text-center pb-3">©2025</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ------------------------ CONFIG ------------------------
+const data = [
+  {id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:8},{id:9},{id:10},
+  {id:11},{id:12},{id:13},{id:14},{id:15}
+];
+
+let activeTags = [];
+
+// อ่าน text file
+async function readText(path){
+  try {
+    let r = await fetch(path);
+    if(r.status === 200) return (await r.text()).trim();
+  } catch(e){}
+  return "";
+}
+
+// โหลดรูป thumbnail
+async function getThumbnail(id){
+  const exts = ["jpg","png","webp"];
+  for(let ext of exts){
+    let url = `assets/id/${id}/thumbnail.${ext}`;
+    try {
+      let r = await fetch(url);
+      if(r.status === 200) return url;
+    } catch(e){}
+  }
+  return "assets/no_image.png";
+}
+
+// โหลด tag จาก tag.txt
+async function getTags(id){
+  const raw = await readText(`assets/id/${id}/tag.txt`);
+  if(!raw) return [];
+
+  let tags = [];
+  raw.split("\n").forEach(line=>{
+    let match = line.match(/(.*)\[(true|false)\]/);
+    if(match && match[2] === "true"){
+      tags.push(match[1].trim());
+    }
+  });
+  return tags;
+}
+
+// ------------------------ RENDER ------------------------
+async function render(){
+  const keyword = document.getElementById("filter").value.toLowerCase();
+
+  const items = await Promise.all(data.map(async x=>{
+    const name = await readText(`assets/id/${x.id}/name.txt`);
+    if(!name) return "";
+
+    const tags = await getTags(x.id);
+
+    // Filter ชื่อ
+    if(!name.toLowerCase().includes(keyword)) return "";
+
+    // Filter Tag
+    if(activeTags.length > 0){
+      if(!tags.some(t => activeTags.includes(t))) return "";
+    }
+
+    const thumb = await getThumbnail(x.id);
+
+    let tagHtml = tags.map(t => `<span class="badge bg-warning text-dark me-1">${t}</span>`).join("");
+
+    return `
+      <div class="col-md-4 fade-in">
+        <div class="card h-100">
+          <img src="${thumb}">
+          <div class="card-body">
+            ${tagHtml}
+            <h5 class="mt-2">${name}</h5>
+            <a href="detail.html?id=${x.id}" class="btn btn-detail mt-2">ดูรายละเอียด</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }));
+
+  document.getElementById("list").innerHTML = items.join("");
+}
+
+// ------------------------ EVENTS ------------------------
+document.getElementById("filter").oninput = render;
+
+document.querySelectorAll(".tag-btn").forEach(btn=>{
+  btn.onclick = ()=>{
+    let tag = btn.dataset.tag;
+
+    if(activeTags.includes(tag)){
+      activeTags = activeTags.filter(t => t !== tag);
+      btn.classList.remove("active");
+    } else {
+      activeTags.push(tag);
+      btn.classList.add("active");
+    }
+
+    render();
+  };
+});
+
+// ------------------------ INIT ------------------------
+render();
+
+// LIGHTBOX
+document.querySelectorAll(".gallery-img").forEach(img=>{
+  img.addEventListener("click", ()=>{
+    document.getElementById("lightbox-img").src = img.src;
+    document.getElementById("lightbox").style.display = "flex";
+  });
+});
+document.getElementById("lightbox").onclick = function(){
+  this.style.display="none";
+};
+</script>
+
+</body>
+</html>
