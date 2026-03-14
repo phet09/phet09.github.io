@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>สถานที่ท่องเที่ยวทั้งหมด</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/bootstrap/Prompt.css" rel="stylesheet">
+    <link href="css/bootstrap/Sarabun.css" rel="stylesheet">
+    <link href="css/bootstrap/Bebas.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00A7A7;
+            --gold: #ffc107;
+            --dark: #0a2f2f;
+            --soft: #f3fbfa;
+            --black: #089999;
+        }
+
+        .mini-detail {
+            font-size: 15px;
+            opacity: .9;
+            line-height: 1.4;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ================= เมนูบาร์ ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top fade-in">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center content" href="#top">
+                <img src="assets/img/logo-t.png" class="me-2">
+                <span class="fw-bold animate-text">NamTok Travel</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html#top">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#greentravel">สถานที่ท่องเที่ยวเชิงธรรมชาติ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#foodtravel">สถานที่ร้านอาหารที่น่าสนใจ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#eventtravel">กิจกรรมประจำท้องถิ่น</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="search.html">สถานที่ทั้งหมด</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">เกี่ยวกับ</a>
+                    </li>
+                </ul>
+
+                <div class="ms-lg-auto">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf3cfGmvzlQsHDPDj2hexuDu94B0S-xJby4nUx-SXxDgjdF7A/viewform?usp=sharing&ouid=104717053231011895228"
+                        class="btn btn-gold">
+                        แบบสอบถาม
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= สถานที่ทั้งหมด ================= -->
+    <section id="location" class="container py-5 fade-in" style="overflow:hidden;">
+
+        <br><br>
+        <!-- กล่องค้นหา -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" style="background-color: #00A7A7;">
+                <img src="assets/icon/search-heart-fill.svg" height="24">
+            </span>
+            <input id="filter" type="text" class="form-control" placeholder=" ค้นหาสถานที่">
+        </div>
+
+        <!-- ปุ่มหมวดหมู่ -->
+        <div class="mb-4 text-center">
+            <button class="btn  m-1 tag-btn" data-tag="น้ำตก">น้ำตก</button>
+            <button class="btn  m-1 tag-btn" data-tag="ถ้ำ">ถ้ำ</button>
+            <button class="btn  m-1 tag-btn" data-tag="ร้านค้า">ร้านค้า</button>
+            <button class="btn  m-1 tag-btn" data-tag="ร้านอาหาร">ร้านอาหาร</button>
+            <button class="btn  m-1 tag-btn" data-tag="วิถีชีวิต&วัฒนธรรม">วิถีชีวิต&วัฒนธรรม</button>
+            <button class="btn  m-1 tag-btn" style="background:#FF6EB8;color:#FFF"
+                data-tag="สถานพยาบาล">สถานพยาบาล</button>
+        </div>
+
+        <div id="list" class="row g-4"></div>
+
+        <div id="pagination" class="mt-5 d-flex justify-content-center"></div>
+
+    </section>
+
+
+    <!-- ================= ขยายภาพ ================= -->
+    <div class="lightbox-overlay" id="lightbox">
+        <img id="lightbox-img" class="animate-zoom">
+    </div>
+
+
+    <!-- ================= ส่วนท้าย ================= -->
+    <footer style="background:var(--dark); color:white;">
+
+        <div class="container pt-5 pb-4">
+
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+
+                    <img src="assets/img/logo-t.png" style="width:90px" class="mb-3">
+
+                    <h5 class="fw-bold">NamTok Travel</h5>
+
+                    <p style="opacity:.8;">
+                        เว็บไซต์แนะนำสถานที่ท่องเที่ยวตำบลน้ำตก
+                        ที่รวบรวมแหล่งท่องเที่ยวธรรมชาติ ร้านอาหาร
+                        และวัฒนธรรมท้องถิ่น เพื่อส่งเสริมการท่องเที่ยว
+                        และเศรษฐกิจของชุมชน
+                    </p>
+
+                </div>
+                <div class="col-lg-3 mb-4">
+
+                    <h5 class="fw-bold mb-3">เมนูเว็บไซต์</h5>
+
+                    <ul class="list-unstyled footer-link">
+
+					<li>
+                        <a href="index.html#top">หน้าแรก</a>
+                    </li>
+                    <li>
+                        <a href="index.html#greentravel">สถานที่ท่องเที่ยวเชิงธรรมชาติ</a>
+                    </li>
+                    <li>
+                        <a href="index.html#foodtravel">สถานที่ร้านอาหารที่น่าสนใจ</a>
+                    </li>
+                    <li>
+                        <a href="index.html#eventtravel">กิจกรรมประจำท้องถิ่น</a>
+                    </li>
+                    <li>
+                        <a href="search.html">สถานที่ทั้งหมด</a>
+                    </li>
+                    <li>
+                        <a href="about.html">เกี่ยวกับ</a>
+                    </li>
+
+                    </ul>
+
+                </div>
+                <div class="col-lg-3 mb-4">
+
+                    <h5 class="fw-bold mb-3">ติดต่อเรา</h5>
+
+                    <p>
+						namtoktravel@gmail.com
+                    </p>
+
+                </div>
+            </div>
+
+            <hr style="opacity:.2;">
+
+            <div class="text-center">
+
+                <p class="mb-1">
+                    © 2025 NamTok Travel
+                </p>
+
+                <small style="opacity:.7;">
+                    โครงการพัฒนาเว็บไซต์เพื่อส่งเสริมการท่องเที่ยวตำบลน้ำตก
+                </small>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= SCRIPTS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        /* =====================================================
+           CONFIG
+        ===================================================== */
+
+        const data = [
+            { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }, { id: 8 },
+            { id: 9 }, { id: 10 }, { id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }, { id: 16 },
+            { id: 17 }, { id: 18 }, { id: 19 }, { id: 20 }, { id: 21 }, { id: 22 }, { id: 23 }, { id: 24 },
+            { id: 25 }, { id: 26 }, { id: 27 }, { id: 28 }, { id: 29 }, { id: 30 }, { id: 31 }, { id: 32 }
+        ];
+
+        let activeTags = [];
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
+
+        /* =====================================================
+           UTIL FUNCTIONS (สำคัญมาก ห้ามลบ)
+        ===================================================== */
+
+        async function readText(path) {
+            try {
+                let r = await fetch(path);
+                if (r.status === 200)
+                    return (await r.text()).trim();
+            } catch (e) { }
+            return "";
+        }
+
+        async function getThumbnail(id) {
+            const exts = ["jpg", "png", "webp"];
+
+            for (let ext of exts) {
+                let url = `assets/id/${id}/thumbnail.${ext}`;
+                try {
+                    let r = await fetch(url);
+                    if (r.status === 200)
+                        return url;
+                } catch (e) { }
+            }
+
+            return "assets/no_image.png";
+        }
+
+        async function getTags(id) {
+            const raw = await readText(`assets/id/${id}/tag.txt`);
+            if (!raw) return [];
+
+            let tags = [];
+
+            raw.split("\n").forEach(line => {
+                let match = line.match(/(.*)\[(true|false)\]/);
+                if (match && match[2] === "true") {
+                    tags.push(match[1].trim());
+                }
+            });
+
+            return tags;
+        }
+
+        /* ===== MINI DETAIL ===== */
+
+        async function getMiniDetail(id) {
+
+            const raw =
+                await readText(`assets/id/${id}/mini-detail.txt`);
+
+            if (!raw) return "";
+
+            return raw.replace(/\n/g, "<br>");
+        }
+        /* =====================================================
+           FILTER DATA
+        ===================================================== */
+
+        async function getFilteredData() {
+
+            const keyword =
+                document.getElementById("filter").value.toLowerCase();
+
+            const results = await Promise.all(
+                data.map(async x => {
+
+                    const name =
+                        await readText(`assets/id/${x.id}/name.txt`);
+                    if (!name) return null;
+
+                    const tags = await getTags(x.id);
+
+                    if (!name.toLowerCase().includes(keyword))
+                        return null;
+
+                    if (activeTags.length > 0) {
+                        if (!tags.some(t => activeTags.includes(t)))
+                            return null;
+                    }
+
+                    const thumb = await getThumbnail(x.id);
+                    const mini = await getMiniDetail(x.id);
+
+                    return { id: x.id, name, tags, thumb, mini };
+                })
+            );
+
+            return results.filter(x => x !== null);
+        }
+
+
+        /* =====================================================
+           RENDER
+        ===================================================== */
+
+        async function render() {
+
+            const filtered = await getFilteredData();
+            const totalPages =
+                Math.ceil(filtered.length / itemsPerPage);
+
+            if (currentPage > totalPages)
+                currentPage = 1;
+
+            const start =
+                (currentPage - 1) * itemsPerPage;
+
+            const paginated =
+                filtered.slice(start, start + itemsPerPage);
+
+            const html = paginated.map(item => {
+
+                const tagHtml =
+                    item.tags.map(t =>
+                        `<span class="badge bg-warning text-dark me-1">${t}</span>`
+                    ).join("");
+
+                return `
+            <div class="col-md-4 fade-in">
+                <div class="card h-100 shadow-sm" style="border-style: solid; border-color: var(--primary);">
+                    <img src="${item.thumb}" class="card-img-top">
+                    <div class="card-body">
+                        ${tagHtml}
+					<div class="card-body d-flex flex-column">
+                        <h5 class="mt-2">${item.name}</h5>
+                        <p class="mini-detail" style="max-width: 75ch;">${item.mini}</p>
+                        <a href="detail.html?id=${item.id}"
+                           class="btn btn-detail mt-auto">
+                           ดูรายละเอียด
+                        </a>
+</div>
+                    </div>
+                </div>
+            </div>
+        `;
+            }).join("");
+
+            document.getElementById("list").innerHTML = html;
+
+            renderPagination(totalPages);
+        }
+
+
+        /* =====================================================
+           PAGINATION
+        ===================================================== */
+
+        function renderPagination(totalPages) {
+
+            if (totalPages <= 1) {
+                document.getElementById("pagination").innerHTML = "";
+                return;
+            }
+
+            let html = `<ul class="pagination">`;
+
+            html += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1});return false;">
+               หน้าก่อน
+            </a>
+        </li>
+    `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                html += `
+            <li class="page-item ${currentPage === i ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${i});return false;">
+                   ${i}
+                </a>
+            </li>
+        `;
+            }
+
+            html += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1});return false;">
+               หน้าถัดไป
+            </a>
+        </li>
+    `;
+
+            html += `</ul>`;
+
+            document.getElementById("pagination").innerHTML = html;
+        }
+
+
+        /* =====================================================
+           CHANGE PAGE
+        ===================================================== */
+
+        function changePage(page) {
+            if (page < 1) return;
+            currentPage = page;
+            render();
+            document.getElementById("location")
+                .scrollIntoView({ behavior: "smooth" });
+        }
+
+
+        /* =====================================================
+           EVENTS
+        ===================================================== */
+
+        document.getElementById("filter").oninput = () => {
+            currentPage = 1;
+            render();
+        };
+
+        document.querySelectorAll(".tag-btn").forEach(btn => {
+            btn.onclick = () => {
+                const tag = btn.dataset.tag;
+
+                if (activeTags.includes(tag)) {
+                    activeTags =
+                        activeTags.filter(t => t !== tag);
+                    btn.classList.remove("active");
+                } else {
+                    activeTags.push(tag);
+                    btn.classList.add("active");
+                }
+
+                currentPage = 1;
+                render();
+            };
+        });
+
+
+        /* =====================================================
+           INIT
+        ===================================================== */
+
+        render();
+
+
+        /* =====================================================
+           LIGHTBOX
+        ===================================================== */
+
+        document.querySelectorAll(".gallery-img").forEach(img => {
+            img.addEventListener("click", () => {
+                document.getElementById("lightbox-img").src = img.src;
+                document.getElementById("lightbox").style.display = "flex";
+            });
+        });
+
+        document.getElementById("lightbox").onclick = function () {
+            this.style.display = "none";
+        };
+
+
+        /* =====================================================
+           ANIMATE TEXT
+        ===================================================== */
+
+        function splitTextPreserveHTML(element) {
+
+            const walk = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+
+            let nodes = [];
+
+            while (walk.nextNode()) {
+                nodes.push(walk.currentNode);
+            }
+
+            nodes.forEach(node => {
+                const text = node.nodeValue;
+                const frag = document.createDocumentFragment();
+
+                text.split("").forEach((char, i) => {
+                    const span = document.createElement("span");
+                    span.className = "char";
+                    span.innerHTML = char === " " ? "&nbsp;" : char;
+                    span.style.transitionDelay = (i * 0.04) + "s";
+                    frag.appendChild(span);
+                });
+
+                node.parentNode.replaceChild(frag, node);
+            });
+        }
+
+        document.querySelectorAll(".animate-text").forEach(el => {
+            splitTextPreserveHTML(el);
+        });
+
+
+        /* =====================================================
+           OBSERVER ANIMATION
+        ===================================================== */
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                } else {
+                    entry.target.classList.remove("show");
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        document
+            .querySelectorAll(".animate-bottom-scrolling,.animate-text")
+            .forEach(el => {
+                observer.observe(el);
+            });
+
+        /* =====================================================
+           PROMOTE SLIDER PRO VERSION
+        ===================================================== */
+
+        const promotePlaces = [
+            "น้ำตกธารทิพย์",
+            "ร้านมีนาคาเฟ่",
+            "คุณตาบุญให้ ไผ่สร้างชีวิต",
+            "บ้านไก่ชน ซุ้มไอ้ขวัญ",
+            "ลำไยคริสตัลสวนฝันวรินทร",
+            "น้ำตกธาราวารินทร์",
+        ];
+
+        let promoteIndex = 0;
+        let autoSlideInterval;
+        let startX = 0;
+        let endX = 0;
+
+        async function loadPromote(index) {
+
+            const place = promotePlaces[index];
+
+            const textPath =
+                `assets/gallery/promote/${place}/รายละเอียด.txt`;
+
+            const imagePath =
+                `assets/gallery/promote/${place}/ภาพ.jpg`;
+
+            try {
+
+                const res = await fetch(textPath);
+                const raw = await res.text();
+
+                const lines = raw.split("\n");
+
+                const title = lines[0];
+                const description =
+                    lines.slice(1).join("<br>");
+
+                const image = document.getElementById("promote-image");
+                const titleEl = document.getElementById("promote-title");
+                const descEl = document.getElementById("promote-description");
+
+                /* reset animation */
+                image.classList.remove("active");
+                titleEl.classList.remove("show");
+                descEl.classList.remove("show");
+
+                image.classList.add("fade-slide");
+
+                setTimeout(() => {
+
+                    image.src = imagePath;
+                    titleEl.innerText = title;
+                    descEl.innerHTML = description;
+
+                    image.classList.remove("fade-slide");
+
+                    /* trigger animation */
+                    image.classList.add("active");
+
+                    setTimeout(() => {
+                        titleEl.classList.add("show");
+                    }, 200);
+
+                    setTimeout(() => {
+                        descEl.classList.add("show");
+                    }, 350);
+
+                }, 300);
+
+                updateDots();
+
+            } catch (e) {
+                console.log("โหลด promote ไม่สำเร็จ", e);
+            }
+        }
+
+        function nextSlide() {
+            promoteIndex++;
+            if (promoteIndex >= promotePlaces.length)
+                promoteIndex = 0;
+
+            loadPromote(promoteIndex);
+        }
+
+        function prevSlide() {
+            promoteIndex--;
+            if (promoteIndex < 0)
+                promoteIndex = promotePlaces.length - 1;
+
+            loadPromote(promoteIndex);
+        }
+
+        /* ============ DOTS ============ */
+
+        function createDots() {
+
+            const container =
+                document.getElementById("promote-dots");
+
+            container.innerHTML = "";
+
+            promotePlaces.forEach((_, i) => {
+                const dot = document.createElement("span");
+                dot.onclick = () => {
+                    promoteIndex = i;
+                    loadPromote(promoteIndex);
+                    resetAutoSlide();
+                };
+                container.appendChild(dot);
+            });
+
+            updateDots();
+        }
+
+        function updateDots() {
+
+            const dots =
+                document.querySelectorAll("#promote-dots span");
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === promoteIndex);
+            });
+        }
+
+        /* ============ AUTO SLIDE ============ */
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                nextSlide();
+            }, 5000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        /* ============ SWIPE MOBILE ============ */
+
+        const promoteSection =
+            document.getElementById("promote");
+
+        promoteSection.addEventListener("touchstart", e => {
+            startX = e.touches[0].clientX;
+        });
+
+        promoteSection.addEventListener("touchend", e => {
+            endX = e.changedTouches[0].clientX;
+
+            if (startX - endX > 50) {
+                nextSlide();
+                resetAutoSlide();
+            }
+
+            if (endX - startX > 50) {
+                prevSlide();
+                resetAutoSlide();
+            }
+        });
+        /* ============ INIT ============ */
+
+        createDots();
+        loadPromote(promoteIndex);
+        startAutoSlide();
+    </script>
+
+</body>
+
+</html>
